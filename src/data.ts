@@ -74,6 +74,11 @@ export const PROJECTS: ProjectDetail[] = [
     ],
     techStack: ["Socket.io", "Agora SDK", "Jetpack Compose", "MVVM"],
     imageUrl: "https://images.unsplash.com/photo-1611162617213-7d7a39e9b1d7?auto=format&fit=crop&q=80&w=1000",
+    imageUrls: [
+      "https://play-lh.googleusercontent.com/SPz_Oahd6C4fgwcqaGYow3w0SpiWkBg5UYZUe3qE3Tf-zflSiYgmNqoyJ1p0D5p5qyi3Msk2_vqXcQC2iEYkTw=w1052-h592-rw",
+      "https://play-lh.googleusercontent.com/F4BAsxMEriX-pSspYrVchpf4aemE4zM_v5xB8YW4cOy-ICbaFMCaaLu3eo_fGoCnHlB84mDabIus-puKTzWjwQ=w1052-h592-rw",
+      "https://play-lh.googleusercontent.com/j65r3c-j-ek4w2Qn16riLCdxzKM5-4nizndVUmqqA__1unh6Hfxd-eZpleSUgBnD33nLkcwfYTEH8zbjdnjfmA=w1052-h592-rw",
+    ],
   },
 ];
 

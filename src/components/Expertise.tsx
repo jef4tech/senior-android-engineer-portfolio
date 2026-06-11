@@ -1,10 +1,11 @@
 import { useState } from "react";
-import { Activity, ShoppingCart, Wrench, Check, Hourglass, CloudSun, Quote } from "lucide-react";
+import { Activity, ShoppingCart, Wrench, Check, Quote, ChevronLeft, ChevronRight } from "lucide-react";
 import { DOMAIN_CONTRIBUTIONS, PROJECTS, AUXILIARY_PROJECTS } from "../data";
 import { motion, AnimatePresence } from "motion/react";
 
 export default function Expertise() {
   const [selectedDomain, setSelectedDomain] = useState<string | null>(null);
+  const [selectedImageByProject, setSelectedImageByProject] = useState<Record<string, number>>({});
 
   // Map icon strings to Lucide components
   const getIcon = (iconId: string) => {
@@ -18,6 +19,21 @@ export default function Expertise() {
       default:
         return <Activity size={22} />;
     }
+  };
+
+  const getActiveImageIndex = (projectId: string) => selectedImageByProject[projectId] ?? 0;
+
+  const setActiveImage = (projectId: string, imageIndex: number) => {
+    setSelectedImageByProject((current) => ({
+      ...current,
+      [projectId]: imageIndex,
+    }));
+  };
+
+  const moveProjectImage = (projectId: string, imageCount: number, direction: 1 | -1) => {
+    const currentIndex = getActiveImageIndex(projectId);
+    const nextIndex = (currentIndex + direction + imageCount) % imageCount;
+    setActiveImage(projectId, nextIndex);
   };
 
   return (
@@ -37,27 +53,76 @@ export default function Expertise() {
 
       <div className="space-y-16">
         {/* Featured Product: Flashat */}
-        {PROJECTS.map((proj) => (
+        {PROJECTS.map((proj) => {
+          const projectImages = proj.imageUrls?.length ? proj.imageUrls : [proj.imageUrl];
+          const activeImageIndex = Math.min(getActiveImageIndex(proj.id), projectImages.length - 1);
+          const activeImage = projectImages[activeImageIndex];
+          const hasMultipleImages = projectImages.length > 1;
+
+          return (
           <div
             key={proj.id}
             className="bg-surface-white rounded-3xl border border-border-subtle shadow-xs hover:shadow-xs transition-all overflow-hidden"
           >
             <div className="grid lg:grid-cols-12 gap-0">
-              {/* Left Column Image */}
-              <div className="lg:col-span-6 aspect-video lg:aspect-auto relative min-h-[300px] overflow-hidden">
-                <img
-                  alt={proj.title}
-                  className="w-full h-full object-cover select-none pointer-events-none hover:scale-105 transition-transform duration-700"
-                  src={proj.imageUrl}
-                  referrerPolicy="no-referrer"
-                />
+              {/* Left Column Image Slider */}
+              <div className="lg:col-span-6 aspect-video lg:aspect-auto relative min-h-[300px] overflow-hidden bg-surface-container-highest">
+                <AnimatePresence mode="wait">
+                  <motion.img
+                    key={`${proj.id}-${activeImageIndex}`}
+                    alt={`${proj.title} preview ${activeImageIndex + 1}`}
+                    className="absolute inset-0 w-full h-full object-cover select-none pointer-events-none"
+                    src={activeImage}
+                    referrerPolicy="no-referrer"
+                    initial={{ opacity: 0, scale: 1.04 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    exit={{ opacity: 0, scale: 0.98 }}
+                    transition={{ duration: 0.35, ease: "easeOut" }}
+                  />
+                </AnimatePresence>
                 <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/10 to-transparent" />
                 <span className="absolute top-4 left-4 bg-primary text-on-primary text-[10px] font-mono font-bold uppercase tracking-wider px-3 py-1.5 rounded-lg z-10 border border-white/10 shadow-md">
                   FEATURED WORK
                 </span>
+                {hasMultipleImages && (
+                  <div className="absolute top-4 right-4 z-10 flex items-center gap-2">
+                    <button
+                      type="button"
+                      aria-label="Previous featured image"
+                      onClick={() => moveProjectImage(proj.id, projectImages.length, -1)}
+                      className="w-9 h-9 rounded-full bg-white/90 text-primary border border-white/30 shadow-md backdrop-blur flex items-center justify-center hover:bg-white transition-colors"
+                    >
+                      <ChevronLeft size={18} />
+                    </button>
+                    <button
+                      type="button"
+                      aria-label="Next featured image"
+                      onClick={() => moveProjectImage(proj.id, projectImages.length, 1)}
+                      className="w-9 h-9 rounded-full bg-white/90 text-primary border border-white/30 shadow-md backdrop-blur flex items-center justify-center hover:bg-white transition-colors"
+                    >
+                      <ChevronRight size={18} />
+                    </button>
+                  </div>
+                )}
                 <div className="absolute bottom-6 left-6 text-white text-xs font-mono lowercase tracking-wide drop-shadow-sm">
                   {proj.company} • {proj.duration}
                 </div>
+                {hasMultipleImages && (
+                  <div className="absolute bottom-6 right-6 z-10 flex items-center gap-2">
+                    {projectImages.map((_, imageIndex) => (
+                      <button
+                        key={imageIndex}
+                        type="button"
+                        aria-label={`Show featured image ${imageIndex + 1}`}
+                        aria-current={activeImageIndex === imageIndex}
+                        onClick={() => setActiveImage(proj.id, imageIndex)}
+                        className={`h-2 rounded-full transition-all ${
+                          activeImageIndex === imageIndex ? "w-7 bg-white" : "w-2 bg-white/55 hover:bg-white/80"
+                        }`}
+                      />
+                    ))}
+                  </div>
+                )}
               </div>
 
               {/* Right Column Details */}
@@ -115,7 +180,8 @@ export default function Expertise() {
               </div>
             </div>
           </div>
-        ))}
+          );
+        })}
 
         {/* Industry Domains Cards */}
         <div className="grid md:grid-cols-3 gap-8">

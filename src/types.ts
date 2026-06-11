@@ -24,6 +24,7 @@ export interface ProjectDetail {
   impact: string[];
   techStack: string[];
   imageUrl: string;
+  imageUrls?: string[];
 }
 
 export interface CareerMilestone {
