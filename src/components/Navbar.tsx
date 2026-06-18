@@ -1,11 +1,7 @@
 import { useState, useEffect } from "react";
 import { Menu, X, FileText, Sun, Moon } from "lucide-react";
 
-interface NavbarProps {
-  onOpenResume: () => void;
-}
-
-export default function Navbar({ onOpenResume }: NavbarProps) {
+export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const [activeSection, setActiveSection] = useState("home");
   const [scrolled, setScrolled] = useState(false);
@@ -136,13 +132,15 @@ export default function Navbar({ onOpenResume }: NavbarProps) {
             {theme === "dark" ? <Sun size={18} className="text-secondary" /> : <Moon size={18} />}
           </button>
 
-          <button
-            onClick={onOpenResume}
+          <a
+            href="/assets/JEFFIN_JOHNY_2026_ANDROID_DEVOLOPER%20.pdf"
+            target="_blank"
+            rel="noopener noreferrer"
             className="hidden sm:flex items-center gap-2 px-5 py-2.5 bg-primary text-on-primary font-medium text-xs font-mono uppercase tracking-wider rounded-lg hover:bg-secondary active:scale-95 transition-all shadow-sm cursor-pointer"
           >
             <FileText size={14} />
             Download Resume
-          </button>
+          </a>
 
           <button
             onClick={() => setIsOpen(!isOpen)}
@@ -191,16 +189,16 @@ export default function Navbar({ onOpenResume }: NavbarProps) {
             </button>
           </div>
 
-          <button
-            onClick={() => {
-              setIsOpen(false);
-              onOpenResume();
-            }}
-            className="w-full flex items-center justify-center gap-2 px-5 py-3 bg-primary text-on-primary font-medium text-xs font-mono uppercase tracking-wider rounded-lg hover:bg-secondary active:scale-95 transition-all shadow-sm"
+          <a
+            href="/assets/JEFFIN_JOHNY_2026_ANDROID_DEVOLOPER%20.pdf"
+            target="_blank"
+            rel="noopener noreferrer"
+            onClick={() => setIsOpen(false)}
+            className="w-full flex items-center justify-center gap-2 px-5 py-3 bg-primary text-on-primary font-medium text-xs font-mono uppercase tracking-wider rounded-lg hover:bg-secondary active:scale-95 transition-all shadow-sm cursor-pointer"
           >
             <FileText size={14} />
             Download Resume
-          </button>
+          </a>
         </div>
       )}
     </header>

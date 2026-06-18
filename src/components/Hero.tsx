@@ -2,11 +2,7 @@ import { Calendar, Download, Cpu, Rocket, ArrowDownRight, ArrowRight } from "luc
 import { PERSONAL_METARGETS } from "../data";
 import { motion } from "motion/react";
 
-interface HeroProps {
-  onOpenResume: () => void;
-}
-
-export default function Hero({ onOpenResume }: HeroProps) {
+export default function Hero() {
   const scrollToProjects = () => {
     const element = document.getElementById("projects");
     if (element) {
@@ -66,13 +62,15 @@ export default function Hero({ onOpenResume }: HeroProps) {
           transition={{ duration: 0.6, delay: 0.45 }}
           className="flex flex-col sm:flex-row justify-center gap-4 mt-10"
         >
-          <button
-            onClick={onOpenResume}
+          <a
+            href="/assets/JEFFIN_JOHNY_2026_ANDROID_DEVOLOPER%20.pdf"
+            target="_blank"
+            rel="noopener noreferrer"
             className="group flex items-center justify-center gap-2 px-8 py-4 bg-primary text-on-primary font-semibold rounded-xl hover:bg-secondary active:scale-95 transition-all shadow-lg hover:shadow-secondary/20 cursor-pointer"
           >
             Download Resume
             <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
-          </button>
+          </a>
           <button
             onClick={scrollToProjects}
             className="group flex items-center justify-center gap-2 px-8 py-4 border-2 border-border-subtle bg-surface-white text-primary font-semibold rounded-xl hover:bg-surface-container-low active:scale-95 transition-all cursor-pointer"
